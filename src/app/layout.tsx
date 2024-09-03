@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google";
 import "@/styles/globals.css";
 import QueryProviders from "@/providers/query-provider";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Data CASN - Teknik Informatikaa",
@@ -27,6 +28,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
+        <Analytics />
         <QueryProviders>
           <h1 className="text-center text-xl font-bold tracking-tighter sm:text-2xl md:text-2xl">
             DATA FORMASI CPNS 2024
