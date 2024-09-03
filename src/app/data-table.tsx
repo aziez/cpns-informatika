@@ -112,7 +112,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex flex-col md:flex-row items-center justify-stretch py-4 gap-2">
         <Input
           placeholder="Global search..."
           value={globalFilter ?? ""}
@@ -127,68 +127,95 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm mr-4"
         />
-        <Select
-          value={
-            (table.getColumn("formasi_nm")?.getFilterValue() as string) ?? ""
-          }
-          onValueChange={(value) => {
-            return table.getColumn("formasi_nm")?.setFilterValue(value);
-          }}
-        >
-          <SelectTrigger className="w-[180px] mr-4">
-            <SelectValue placeholder="Select Formasi" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="UMUM">UMUM</SelectItem>
-            <SelectItem value="PUTRA/PUTRI KALIMANTAN">
-              PUTRA/PUTRI KALIMANTAN
-            </SelectItem>
-            <SelectItem value="PENYANDANG DISABILITAS">
-              PENYANDANG DISABILITAS
-            </SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex items-baseline justify-around w-full">
+          <Select
+            value={
+              (table.getColumn("formasi_nm")?.getFilterValue() as string) ?? ""
+            }
+            onValueChange={(value) => {
+              return table.getColumn("formasi_nm")?.setFilterValue(value);
+            }}
+          >
+            <SelectTrigger className="w-[180px] mr-4">
+              <SelectValue placeholder="Select Formasi" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="UMUM">UMUM</SelectItem>
+              <SelectItem value="PUTRA/PUTRI KALIMANTAN">
+                PUTRA/PUTRI KALIMANTAN
+              </SelectItem>
+              <SelectItem value="PENYANDANG DISABILITAS">
+                PENYANDANG DISABILITAS
+              </SelectItem>
+            </SelectContent>
+          </Select>
 
-        <Select
-          value={(table.getColumn("jp_nama")?.getFilterValue() as string) ?? ""}
-          onValueChange={(value) => {
-            return table.getColumn("jp_nama")?.setFilterValue(value);
-          }}
-        >
-          <SelectTrigger className="w-[180px] mr-4">
-            <SelectValue placeholder="Select Jenis" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="CPNS">CPNS</SelectItem>
-            <SelectItem value="PPPK">PPPK</SelectItem>
-          </SelectContent>
-        </Select>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+          <Select
+            value={
+              (table.getColumn("jp_nama")?.getFilterValue() as string) ?? ""
+            }
+            onValueChange={(value) => {
+              return table.getColumn("jp_nama")?.setFilterValue(value);
+            }}
+          >
+            <SelectTrigger className="w-[180px] mr-4">
+              <SelectValue placeholder="Select Jenis" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="CPNS">CPNS</SelectItem>
+              <SelectItem value="PPPK">PPPK</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-baseline justify-around w-full">
+          {router === "/statis" && (
+            <Select
+              value={`${pageSize}`}
+              onValueChange={(value) => {
+                setPageSize(Number(value));
+              }}
+            >
+              <SelectTrigger className="h-8 w-[70px]">
+                <SelectValue placeholder={pageSize} />
+              </SelectTrigger>
+              <SelectContent side="top">
+                {[10, 20, 30, 40, 50, 100, 200, 300, 500, 1000].map(
+                  (pageSize) => (
+                    <SelectItem key={pageSize} value={`${pageSize}`}>
+                      {pageSize}
+                    </SelectItem>
+                  )
+                )}
+              </SelectContent>
+            </Select>
+          )}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Columns
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>

@@ -76,14 +76,34 @@ export const columns: ColumnDef<FormData>[] = [
   },
   {
     accessorKey: "gaji_min",
-    header: "Gaji Minimal",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Gaji Minimal
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => toIDR(row.getValue("gaji_min")),
     enableSorting: true,
     enableColumnFilter: true,
   },
   {
     accessorKey: "gaji_max",
-    header: "Gaji Maksimal",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Gaji Maksimal
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => toIDR(row.getValue("gaji_max")),
     enableSorting: true,
     enableColumnFilter: true,
